@@ -1,0 +1,26 @@
+/* ------------------------------------------------------------
+   SimpleButton.module.css
+
+   The `.module.css` in the filename is important. It makes this a
+   CSS Module, which means these class names belong to THIS component
+   only. If another component also defines `.button`, they will not
+   clash — Vite renames them behind the scenes.
+
+   That is why you can keep using short, obvious names like `.button`
+   instead of inventing `.simple-button-wrapper-primary`.
+   ------------------------------------------------------------ */
+
+.button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #dc2626;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #b91c1c;
+}

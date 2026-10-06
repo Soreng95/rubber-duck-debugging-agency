@@ -1,0 +1,35 @@
+<!doctype html>
+<!--
+  ============================================================
+   index.html — the ONE html file in the whole project
+  ============================================================
+
+   This is a surprise for most people: a React app has a single
+   mostly-empty HTML file. There is no <h1> in here, no buttons,
+   no content at all.
+
+   Look at <div id="root"></div> below. That div is empty, and
+   React fills it with everything you see in the browser.
+
+   The <script> line loads src/main.jsx, which is where React
+   starts up. Follow that file next.
+
+   You will almost never need to edit this file — except the
+   <title>, which is the text on the browser tab.
+  ============================================================
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rubber Duck Debugging Agency</title>
+  </head>
+  <body>
+    <!-- React puts the entire app inside this empty div. -->
+    <div id="root"></div>
+
+    <!-- The starting point of our JavaScript. -->
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

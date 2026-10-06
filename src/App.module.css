@@ -1,0 +1,59 @@
+/* ------------------------------------------------------------
+   App.module.css — styles that belong to App.jsx only
+
+   These are the "layout" styles for the page. Compare with
+   index.css, which holds the styles for the whole document.
+   ------------------------------------------------------------ */
+
+.page {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.875rem;
+  line-height: 1.2;
+}
+
+.intro {
+  margin: 0.75rem 0 0;
+  font-size: 0.9375rem;
+  opacity: 0.75;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.heading {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.meta {
+  margin: 0;
+  font-size: 0.8125rem;
+  opacity: 0.7;
+}
+
+/* A row of buttons side by side, wrapping on small screens. */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* The duck list should fill the width of its section.
+   (The buttons size themselves — see Button.module.css.) */
+.section > div:not(.row) {
+  width: 100%;
+}

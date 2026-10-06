@@ -1,0 +1,42 @@
+/* ------------------------------------------------------------
+   Button.module.css
+
+   Notice there are several classes in here. The component decides
+   which ones to combine, based on its props.
+   ------------------------------------------------------------ */
+
+/* Always applied — the shared look. */
+.button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+/* Applied only when variant="primary" */
+.primary {
+  background: #2563eb;
+  color: white;
+}
+
+.primary:hover {
+  background: #1d4ed8;
+}
+
+/* Applied only when variant="secondary" */
+.secondary {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.secondary:hover {
+  background: #d1d5db;
+}
+
+/* Applied only when fullWidth is true */
+.fullWidth {
+  width: 100%;
+}
