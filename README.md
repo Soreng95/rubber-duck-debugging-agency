@@ -58,10 +58,10 @@ which is simply JavaScript running on a computer instead of inside a browser.
 While you work, Vite runs a little server on your own machine. You open:
 
 ```
-http://localhost:5173
+http://localhost:3000
 ```
 
-`localhost` means "this computer". `5173` is the door Vite listens on. Nobody
+`localhost` means "this computer". `3000` is the door Vite listens on. Nobody
 on the internet can see it — it is only yours.
 
 ---
@@ -183,10 +183,10 @@ You will see:
 ```
   VITE v8.3.3  ready in 91 ms
 
-  ➜  Local:   http://localhost:5173/
+  ➜  Local:   http://localhost:3000/
 ```
 
-Open <http://localhost:5173> in your browser.
+Open <http://localhost:3000> in your browser.
 
 Now open `src/App.jsx`, change the heading text, and save. The browser updates
 on its own — you never press refresh. That is **hot reload**, and it is the
@@ -472,7 +472,7 @@ React's errors are genuinely good and usually name the file and line.
 | Nothing happens when I click | Did you pass the function (`onClick={fn}`) or call it (`onClick={fn()}`)? |
 | I changed state but the screen is the same | You mutated instead of replacing. `duck.busy = true` does nothing — build a new object/array. See `handleHire` in `App.jsx`. |
 | `Module not found` / `Failed to resolve import` | Typo in the path, or the capital letters do not match. `DuckCard.jsx` ≠ `duckcard.jsx`. |
-| `Port 5173 is already in use` | The server is already running in another terminal tab. Use that one, or `Ctrl + C` it. |
+| `Port 3000 is already in use` | The server is already running in another terminal tab. Use that one, or `Ctrl + C` it. |
 | Everything is broken and makes no sense | `Ctrl + C`, delete `node_modules`, `pnpm install`, `pnpm dev`. |
 
 **Install React DevTools** (browser extension, Chrome and Firefox). It adds a
