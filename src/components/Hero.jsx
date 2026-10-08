@@ -5,9 +5,9 @@ export default function Hero() {
   return (
     <div className="hero">
       <div className="hero__cue">
-        {/* replace "scroll" with data when JSON is available" */}
+        {/* replace "scroll" with data when JSON is available */}
         <span>Scroll</span>
-        <span>↓</span>
+        <span aria-hidden="true">↓</span>
       </div>
     </div>
   );
