@@ -1,0 +1,23 @@
+.faq_answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s ease;
+}
+
+.faq_answer.is-open {
+  grid-template-rows: 1fr;
+}
+
+.faq_answer-inner {
+  overflow: hidden;
+}
+
+.faq_question {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
