@@ -8,6 +8,7 @@ Text comes from the content JSON. Until Emil's backend is ready we use PLACEHOLD
 it for real data when it is available.
 */
 
+import { useState } from "react";
 import "./Tickets.css";
 
 // TODO: replace this with real data from the backend when it is ready
@@ -20,10 +21,42 @@ const PLACEHOLDER = {
   info: "Sentrum Scene, Oslo - Doors: 18:00 - 16+",
   price: { label: "Fra / From", amount: "690 NOK", note: "Early bird til 31.08" },
   stub: { label: "Drag to claim" },
+  fields: {
+    email: {
+    label: "E-post / Email",
+    placeholder: "navn@epost.no",
+    invalid: "Skriv inn en gyldig e-post / Enter a valid email",
+  },
+  phone: {
+    label: "Telefon / Phone",
+    placeholder: "+47 123 45 678",
+    invalid: "Skriv inn et gyldig telefonnummer / Enter a valid phone number",
+  },
+ },
 };
 
+// returns "email", "phone" or null (= everything is valid)
+function findInvalidField(email, phone) {
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) return "email";
+
+    //remove spaces, then: 8 digits, or + country code and 8+ digits
+    const digits = phone.replace(/\s/g, "");
+    if (!/^(\d{8}|\+\d{10,})$/.test(digits)) return "phone";
+
+    return null;
+}
+
 export default function Tickets({ content = PLACEHOLDER }) {
-    const { title, meta, tag, name, edition, info, price, stub } = content;
+    const { title, meta, tag, name, edition, info, price, stub, fields } = content;
+
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [errorField, setErrorField] = useState(null); 
+
+    function handleSubmit(e) {
+        e.preventDefault(); // prevent the form from actually submitting and reloading the page
+        setErrorField(findInvalidField(email, phone));
+    }
 
     return (
         <section className="tickets" aria-labelledby="tickets-title">
@@ -32,7 +65,7 @@ export default function Tickets({ content = PLACEHOLDER }) {
                 <p className="tickets_meta">{meta}</p>
             </div>
 
-            <div className="ticket">
+            <form className="ticket" onSubmit={handleSubmit} noValidate>
                 {/* The main body of the ticket */}
                 <div className="ticket_main">
                     <p className="ticket_tag">{tag}</p>
@@ -41,13 +74,54 @@ export default function Tickets({ content = PLACEHOLDER }) {
                     </p>
                     <p className="ticket_info">{info}</p>
 
-                    {/* #14 adds the email+ phone field here */}
+                    <div className="ticket_fields">
+                        <div className="field">
+                            <label htmlFor="tk-email">{fields.email.label}</label>
+                            <input 
+                            id="tk-email"
+                            type="email"
+                            autoComplete="email"
+                            placeholder={fields.email.placeholder} 
+                            value={email}
+                            onChange={(e) => {
+                                setEmail(e.target.value);
+                                if (errorField === "email") setErrorField(null);
+                            }}
+                            aria-invalid={errorField === "email"}
+                            aria-describedby="tk-error"
+                            />
+                        </div>
+
+                            <div className="field">
+                                <label htmlFor="tk-phone">{fields.phone.label}</label>
+                                <input 
+                                id="tk-phone"
+                                type="tel"
+                                autoComplete="tel"
+                                placeholder={fields.phone.placeholder}
+                                value={phone}
+                                onChange={(e) => {
+                                    setPhone(e.target.value);
+                                    if (errorField === "phone") setErrorField(null);
+                                }}
+                                aria-invalid={errorField === "phone"}
+                                aria-describedby="tk-error"
+                            />
+                        </div>
+                    </div>
 
                     <p className="ticket_price">
                         <span>{price.label}</span>
                         <b>{price.amount}</b>
                         <span>{price.note}</span>
                     </p>
+
+                    <p id="tk-error" className="ticket_error" aria-live="polite">
+                        {errorField && fields[errorField].invalid}
+                    </p>
+
+                    {/* temporary - #15 turns the stub into a submit button*/}
+                    <button type="submit">Test</button>
                 </div>
 
                 {/* Tear line: a repeating gradient of dots */}
@@ -58,7 +132,7 @@ export default function Tickets({ content = PLACEHOLDER }) {
                     <span className="ticket_arrow" aria-hidden="true">⇨</span>
                     <span className="ticket_stub-label">{stub.label}</span>
                 </div>
-            </div>
+            </form>
         </section> 
     );
 }
