@@ -15,13 +15,15 @@
 //  Read the five components in src/components in order (they are numbered).
 //  Each one introduces exactly one new idea.
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import SimpleButton from "./components/SimpleButton.jsx";
 import Button from "./components/Button.jsx";
 import Counter from "./components/Counter.jsx";
 import DuckList from "./components/DuckList.jsx";
+import Lineup from "./components/Lineup.jsx";
 
+import { fetchContent } from "./api.js";
 import styles from "./App.module.css";
 
 // ------------------------------------------------------------
@@ -55,6 +57,57 @@ export default function App() {
   //  constantly. It is also the thing that trips everyone up at first, so
   //  if this file is the one you reread, that is normal.
   const [ducks, setDucks] = useState(INITIAL_DUCKS);
+
+  // ------------------------------------------------------------
+  //  Loading data from a server
+  // ------------------------------------------------------------
+  //  The duck list above lives in this file. The poster text does not - it
+  //  comes from our backend, and the browser has to go and ask for it.
+  //
+  //  The request happens HERE, once, in the component above everyone who
+  //  needs the data - the same "lifting state up" rule as the ducks. Each
+  //  section then gets its own slice as a prop. If every component fetched
+  //  for itself, one page load would fire five requests for data that
+  //  arrives in a single one.
+  //
+  //  `null` means "we have not heard back yet". It is not an error.
+  const [content, setContent] = useState(null);
+
+  //  useEffect is for talking to the world outside React: networks, timers,
+  //  the browser itself. The empty array at the end means "run once, after
+  //  the first render". Without it the fetch would run on every render, and
+  //  setting state causes a render, which would fetch again, for ever.
+  useEffect(() => {
+    //  An AbortController is a remote control for the request. If this
+    //  component disappears while the answer is still on its way, the cleanup
+    //  below cancels it - otherwise we set state on something that is gone.
+    const controller = new AbortController();
+
+    async function load() {
+      try {
+        setContent(await fetchContent(controller.signal));
+      } catch (error) {
+        //  Cancelling on purpose throws too, and that is not worth shouting
+        //  about. Anything else is a real failure.
+        if (error.name !== "AbortError") {
+          console.error(error);
+        }
+        //  Note what we do NOT do: blank the page. `content` stays null and
+        //  each section falls back to its own built-in copy, so a backend
+        //  having a bad morning costs us the live text, not the layout.
+      }
+    }
+
+    load();
+
+    //  Returning a function from useEffect is how you clean up after
+    //  yourself. React runs it when the component goes away.
+    //
+    //  In development this fetch happens twice. That is StrictMode in
+    //  main.jsx deliberately mounting everything twice to prove the cleanup
+    //  works. The built app runs it once.
+    return () => controller.abort();
+  }, []);
 
   // ------------------------------------------------------------
   //  Changing state based on the old state
@@ -92,75 +145,85 @@ export default function App() {
   return (
     // A component must return ONE element, so everything is wrapped in
     // <div>. If you do not want an extra tag in the HTML, use an empty
-    // "fragment" instead: <> ... </>
-    <div className={styles.page}>
-      {/* This is how you write a comment inside JSX. */}
+    // "fragment" instead: <> ... </> - which is what we do here, so the
+    // line-up can run the full width of the window while the duck page
+    // stays in its narrow column.
+    <>
+      <div className={styles.page}>
+        {/* This is how you write a comment inside JSX. */}
 
-      <header>
-        <h1 className={styles.title}>Rubber Duck Debugging Agency 🦆</h1>
-        <p className={styles.intro}>
-          Change the heading in <code>src/App.jsx</code>, press save, and watch
-          the browser update by itself. Then open the five components in{" "}
-          <code>src/components</code> and read them in order.
-        </p>
-      </header>
+        <header>
+          <h1 className={styles.title}>Rubber Duck Debugging Agency 🦆</h1>
+          <p className={styles.intro}>
+            Change the heading in <code>src/App.jsx</code>, press save, and watch
+            the browser update by itself. Then open the five components in{" "}
+            <code>src/components</code> and read them in order.
+          </p>
+        </header>
 
-      {/* --------------------------------------------------------
-          1. A component with no props — always looks the same.
-          -> components/SimpleButton.jsx
-      -------------------------------------------------------- */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>1. A component without props</h2>
-        <SimpleButton />
-      </section>
+        {/* --------------------------------------------------------
+            1. A component with no props — always looks the same.
+            -> components/SimpleButton.jsx
+        -------------------------------------------------------- */}
+        <section className={styles.section}>
+          <h2 className={styles.heading}>1. A component without props</h2>
+          <SimpleButton />
+        </section>
 
-      {/* --------------------------------------------------------
-          2. ONE component, reused with different props.
-             This is the entire point of components.
-          -> components/Button.jsx
-      -------------------------------------------------------- */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>2. One component, different props</h2>
-        <div className={styles.row}>
-          {/* text and variant are props, written like HTML attributes */}
-          <Button text="Primary" variant="primary" />
-          <Button text="Secondary" variant="secondary" />
-          {/* variant is optional, so this falls back to "primary" */}
-          <Button text="No variant given" />
-        </div>
-        {/* A true/false prop written on its own means `true` */}
-        <Button text="Full width" fullWidth />
-      </section>
+        {/* --------------------------------------------------------
+            2. ONE component, reused with different props.
+               This is the entire point of components.
+            -> components/Button.jsx
+        -------------------------------------------------------- */}
+        <section className={styles.section}>
+          <h2 className={styles.heading}>2. One component, different props</h2>
+          <div className={styles.row}>
+            {/* text and variant are props, written like HTML attributes */}
+            <Button text="Primary" variant="primary" />
+            <Button text="Secondary" variant="secondary" />
+            {/* variant is optional, so this falls back to "primary" */}
+            <Button text="No variant given" />
+          </div>
+          {/* A true/false prop written on its own means `true` */}
+          <Button text="Full width" fullWidth />
+        </section>
 
-      {/* --------------------------------------------------------
-          3. State: a component that remembers something.
-          -> components/Counter.jsx
-      -------------------------------------------------------- */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>3. State with useState</h2>
-        <Counter />
-      </section>
+        {/* --------------------------------------------------------
+            3. State: a component that remembers something.
+            -> components/Counter.jsx
+        -------------------------------------------------------- */}
+        <section className={styles.section}>
+          <h2 className={styles.heading}>3. State with useState</h2>
+          <Counter />
+        </section>
 
-      {/* --------------------------------------------------------
-          4 + 5. A list built from data, and state lifted up to App.
-             Click "Hire" and watch handleHire above run.
-          -> components/DuckList.jsx and components/DuckCard.jsx
-      -------------------------------------------------------- */}
-      <section className={styles.section}>
-        <h2 className={styles.heading}>4. A list from data, with state</h2>
-        <p className={styles.meta}>
-          {availableCount} of {ducks.length} ducks available
-        </p>
+        {/* --------------------------------------------------------
+            4 + 5. A list built from data, and state lifted up to App.
+               Click "Hire" and watch handleHire above run.
+            -> components/DuckList.jsx and components/DuckCard.jsx
+        -------------------------------------------------------- */}
+        <section className={styles.section}>
+          <h2 className={styles.heading}>4. A list from data, with state</h2>
+          <p className={styles.meta}>
+            {availableCount} of {ducks.length} ducks available
+          </p>
 
-        {/* `ducks` goes DOWN as data. `handleHire` goes down as a function,
-            so the cards can send events back UP to this file. */}
-        <DuckList ducks={ducks} onHire={handleHire} />
+          {/* `ducks` goes DOWN as data. `handleHire` goes down as a function,
+              so the cards can send events back UP to this file. */}
+          <DuckList ducks={ducks} onHire={handleHire} />
 
-        {/* Only show Reset once at least one duck is busy. */}
-        {availableCount < ducks.length && (
-          <Button text="Reset the ducks" variant="secondary" onClick={handleReset} />
-        )}
-      </section>
-    </div>
+          {/* Only show Reset once at least one duck is busy. */}
+          {availableCount < ducks.length && (
+            <Button text="Reset the ducks" variant="secondary" onClick={handleReset} />
+          )}
+        </section>
+      </div>
+
+      {/* Issues #8-#10. `content` is null until the fetch lands, so this is
+          `undefined` on the first render - which is exactly what makes
+          Lineup's default prop take over. Optional chaining (`?.`) is what
+          stops that null from throwing. */}
+      <Lineup content={content?.lineup} />
+    </>
   );
 }
