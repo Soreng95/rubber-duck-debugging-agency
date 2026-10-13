@@ -24,23 +24,8 @@ import DuckList from "./components/DuckList.jsx";
 
 import styles from "./App.module.css";
 
-import FaqItem from "./components/FaqItem.jsx";
-const FAQ_ITEMS = [
-  {
-    id: 1,
-    question: "Hva?",
-    questionEn: "What?",
-    answer: "Eksempel!",
-    answerEn: "Example!",
-  },
-  {
-    id: 2,
-    question: "Hvordan?",
-    questionEn: "How?",
-    answer: "Klikk!",
-    answerEn: "Click!",
-  },
-];
+import Faq from "./components/Faq.jsx";
+
 // ------------------------------------------------------------
 //  Our starting data
 // ------------------------------------------------------------
@@ -179,14 +164,7 @@ export default function App() {
         )}
       </section>
       <section className={styles.section}>
-  <h2 className={styles.heading}>Spørsmål</h2>
-  <div>
-  <p>Ofte stilte spørsmål</p>
-  <p>Frequently asked</p>
-  </div>
-  {FAQ_ITEMS.map((item) => (
-    <FaqItem key={item.id} item={item} />
-  ))}
+<Faq/>
 </section>
     </div>
    
