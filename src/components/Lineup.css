@@ -4,14 +4,14 @@ Colours fall back to the default theme if the theme is not set in the app.
 */
 
 .lineup {
-    --l-bg: var(--bg, #160a12);
-    --l-white: var(--white, #fff2ea);
-    --l-orange: var(--orange, #ff7a33);
-    --l-green: var(--green, #1ecf9a);
+    --l-bg: var(--bg);
+    --l-white: var(--white);
+    --l-orange: var(--orange);
+    --l-green: var(--green);
 
     background: var(--l-bg);
     color: var(--l-white);
-    font-family: "Space Grotesk", system-ui, sans-serif;
+    font-family: var(--font-body);
     padding: clamp(64px, 10vw, 130px) clamp(24px, 5vw, 80px) clamp(72px, 9vw, 120px);
 }
 
@@ -30,7 +30,7 @@ Colours fall back to the default theme if the theme is not set in the app.
 
 .lineup_title {
     margin: 0;
-    font-family: "Archivo Black", sans-serif;
+    font-family: var(--font-display);
     font-size: clamp(44px, 8vw, 92px);
     letter-spacing: -.03em;
     line-height: .9;
@@ -48,7 +48,7 @@ Colours fall back to the default theme if the theme is not set in the app.
 
 .lineup_meta {
     margin: 0;
-    font-family: "DM Mono", monospace;
+    font-family: var(--font-mono);
     font-size: clamp(11px, 1.2vw, 13px);
     letter-spacing: .22em;
     text-transform: uppercase;
@@ -58,7 +58,7 @@ Colours fall back to the default theme if the theme is not set in the app.
 /* Shown only when the backend gave us no artists. */
 .lineup_empty {
     margin: 0;
-    font-family: "DM Mono", monospace;
+    font-family: var(--font-mono);
     font-size: clamp(12px, 1.4vw, 15px);
     letter-spacing: .18em;
     text-transform: uppercase;
@@ -98,7 +98,7 @@ Colours fall back to the default theme if the theme is not set in the app.
 }
 
 .reveal_label {
-    font-family: "DM Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     letter-spacing: .24em;
     text-transform: uppercase;
@@ -106,7 +106,7 @@ Colours fall back to the default theme if the theme is not set in the app.
 }
 
 .reveal_name {
-    font-family: "Archivo Black", sans-serif;
+    font-family: var(--font-display);
     font-size: clamp(30px, 5vw, 60px);
     letter-spacing: -.01em;
     color: transparent;

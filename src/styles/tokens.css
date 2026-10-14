@@ -1,0 +1,64 @@
+/* ============================================================
+   src/styles/tokens.css — issue #3
+   ============================================================
+
+   One place where the poster's colours, typefaces and spacing are decided.
+   Every section reads from here, so changing a value changes it everywhere.
+
+   A custom property is just a variable that lives in CSS. You declare it on
+   :root (the <html> element), and because CSS inherits downward, every
+   element on the page can read it.
+
+   Why this file exists: the poster leans on a very specific look — warm
+   amber, neon teal, near-black. If four people each pick their own #ff9955
+   the page looks like four people built it. The values below were picked
+   off the example poster, not eyeballed.
+
+   WHY THESE NAMES: the components were written before this file existed,
+   so they already ask for particular names — `var(--bg, #160a12)` and so
+   on. Those names are the contract. Renaming them to something prettier
+   would mean every section silently falls back to its own hardcoded copy
+   and nothing would look different, which is the most annoying kind of bug:
+   the one where your change appears to do nothing.
+   ------------------------------------------------------------ */
+
+:root {
+  /* --- Colour -------------------------------------------------
+     The two accents are the whole identity of this poster. They are
+     deliberately NOT called "cyan" and "pink" — the example page calls them
+     that, but the values are orange and green, and a name that lies is
+     worse than no name. */
+  --bg: #160a12;          /* near-black, the ground every section sits on */
+  --white: #fff2ea;       /* warm off-white, main text */
+  --orange: #ff7a33;      /* accent 1: headline strokes, focus rings */
+  --green: #1ecf9a;       /* accent 2: the slash, the outlined "26" */
+  --accent-mid: #b9a0c9;  /* only used to blend orange into green on the card hover border */
+  --ink: rgba(255, 242, 234, .45);  /* muted text: meta lines, labels */
+  --error: #ff5a6e;       /* form validation only */
+
+  /* The artist cards invert: light card, dark text. */
+  --card: #ece7dd;
+  --card-ink: #15141a;
+
+  /* --- Type ---------------------------------------------------
+     Loaded in index.html. Each stack ends in a real fallback, so the page
+     is still readable if Google Fonts is blocked or slow. */
+  --font-display: "Archivo Black", Impact, sans-serif;        /* STØY, section headings */
+  --font-condensed: Oswald, "Arial Narrow", sans-serif;       /* artist names */
+  --font-body: "Space Grotesk", system-ui, sans-serif;        /* everything else */
+  --font-mono: "DM Mono", ui-monospace, monospace;            /* small caps labels, meta */
+
+  /* --- Spacing ------------------------------------------------
+     A small scale rather than free-form numbers. Four steps is enough; if
+     you need a fifth, you probably need a different layout.
+
+     Section padding stays as clamp() inside each section, because it scales
+     with the viewport and a fixed token cannot do that. */
+  --space-1: 7px;
+  --space-2: 14px;
+  --space-3: 22px;
+  --space-4: 38px;
+
+  --radius: 11px;         /* cards */
+  --radius-lg: 18px;      /* the ticket, the reveal block */
+}

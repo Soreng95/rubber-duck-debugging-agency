@@ -11,8 +11,8 @@ it still looks right if it is ever used outside the line-up section.
     flex-direction: column;
     gap: 4px;
 
-    background: var(--card, #ece7dd);
-    color: var(--card-ink, #15141a);
+    background: var(--card);
+    color: var(--card-ink);
     border-radius: 11px;
     padding: clamp(13px, 1.3vw, 18px) clamp(15px, 1.6vw, 20px);
 
@@ -25,7 +25,10 @@ it still looks right if it is ever used outside the line-up section.
 
    You cannot put a gradient on `border`, so this is the usual trick: an
    overlay the size of the card, filled with the gradient, with a mask that
-   punches out everything except a 2px frame. */
+   punches out everything except a 2px frame.
+
+   The #000 below is not a colour choice - a mask only reads opacity, so any
+   fully opaque value does the job. That is why it is not a token. */
 .card::after {
     content: "";
     position: absolute;
@@ -34,9 +37,9 @@ it still looks right if it is ever used outside the line-up section.
     border-radius: inherit;
     padding: 2px;
     background: linear-gradient(135deg,
-        var(--orange, #ff7a33) 0%,
-        #b9a0c9 50%,
-        var(--green, #1ecf9a) 100%);
+        var(--orange) 0%,
+        var(--accent-mid) 50%,
+        var(--green) 100%);
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
@@ -65,7 +68,7 @@ it still looks right if it is ever used outside the line-up section.
 
 .card_name {
     margin: 0;
-    font-family: Oswald, sans-serif;
+    font-family: var(--font-condensed);
     font-weight: 600;
     line-height: 1;
     text-transform: uppercase;
@@ -84,7 +87,7 @@ it still looks right if it is ever used outside the line-up section.
 
 .card_sub {
     margin: 0;
-    font-family: "DM Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: .1em;
     text-transform: uppercase;
@@ -98,27 +101,29 @@ it still looks right if it is ever used outside the line-up section.
     border-radius: 50%;
     border: 1.5px solid rgba(21, 20, 26, .3);
     background: transparent;
-    color: var(--card-ink, #15141a);
+    color: var(--card-ink);
     cursor: pointer;
 
     display: grid;
     place-items: center;
-    font-family: "DM Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 12px;
     font-style: italic;
-    font-weight: 700;
+    font-weight: 500;  /* DM Mono only ships 300/400/500 - asking for 700
+                          makes the browser fake it, and faked bold on a
+                          monospace face looks smudged */
     transition: background .2s, color .2s, border-color .2s, transform .2s;
 }
 
 .card_info:hover {
-    background: var(--card-ink, #15141a);
-    color: var(--card, #ece7dd);
-    border-color: var(--card-ink, #15141a);
+    background: var(--card-ink);
+    color: var(--card);
+    border-color: var(--card-ink);
     transform: scale(1.08);
 }
 
 .card_info:focus-visible {
-    outline: 2px solid var(--orange, #ff7a33);
+    outline: 2px solid var(--orange);
     outline-offset: 2px;
 }
 
