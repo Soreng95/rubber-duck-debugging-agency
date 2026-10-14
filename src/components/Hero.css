@@ -1,0 +1,50 @@
+.hero {
+  position: relative;
+  min-height: 400px;
+
+  /* The hero is its own dark band, so the cue stays readable whatever the
+     page around it looks like. Without this the cue inherits the page colour
+     and disappears — white on white in light mode, which is why it was
+     temporarily hardcoded to black. Falls back to the poster colours if the
+     app has not set a theme, same as Tickets.css. */
+  background: var(--bg, #160a12);
+  color: var(--white, #fff2ea);
+}
+
+.hero__cue {
+  font-family: "DM Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ink, rgba(255, 242, 234, 0.5));
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+
+  position: absolute;
+  bottom: 26px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+
+  animation: bob 2s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%, 
+  100% { 
+    transform: translate(-50%, 0) ;
+  } 
+  50% { 
+    transform: translate(-50%, 6px) ;
+  } 
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__cue { 
+    animation: none; 
+  }
+}
