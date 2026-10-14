@@ -16,6 +16,12 @@ import { createRoot } from "react-dom/client";
 
 // Importing a CSS file from JavaScript looks weird, but this is how it works
 // in Vite. index.css is loaded for the whole app because it is imported here.
+//
+// tokens.css comes first on purpose: it defines the colours, typefaces and
+// spacing that every section reads with var(). CSS does not care about the
+// order for custom properties, but humans do - the definitions belong above
+// the things that use them. (Issue #3)
+import "./styles/tokens.css";
 import "./index.css";
 
 import App from "./App.jsx";

@@ -24,6 +24,27 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Rubber Duck Debugging Agency</title>
+
+    <!-- Fonts for the poster (issue #3).
+
+         These live here rather than in a CSS file on purpose. A browser
+         finds a <link> while it is still reading <head>, and starts
+         downloading immediately. An @import inside a stylesheet is only
+         discovered after that stylesheet has been fetched and parsed, so
+         the text renders in a fallback font first and then jumps.
+
+         preconnect opens the connection to Google's servers early, before
+         we know the exact file names - it saves a round trip.
+
+         display=swap means: show the text in a fallback font right away and
+         swap the real one in when it arrives. Without it the text is
+         invisible while the font loads. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Mono:wght@400;500&family=Oswald:wght@400;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <!-- React puts the entire app inside this empty div. -->
