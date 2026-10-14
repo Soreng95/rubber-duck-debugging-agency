@@ -21,10 +21,10 @@ export default function FaqItem({ item, venue, isOpen, onToggle}) {
         aria-controls={panelId}
         onClick={onToggle}
       >
-        <div className="faq_question-text">
-          <p className="faq_question-no">{item.q.no}</p>
-          <p className="faq_question-en">{item.q.en}</p>
-        </div>
+        <span className="faq_question-text">
+          <span className="faq_question-no">{item.q.no}</span>
+          <span className="faq_question-en">{item.q.en}</span>
+        </span>
         <span className="faq_icon" aria-hidden="true">
           {isOpen ? "×" : "+"}
         </span>

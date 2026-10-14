@@ -9,8 +9,7 @@ export default function Faq({content, meta}) {
 
   return (
   <section className="faq">
-      <h2>Spørsmål</h2>  
-      <h3>{content.title}</h3>
+      <h2>{content.title}</h2>
       {content.items.map((item) => (
         <FaqItem 
         key={item.id} 
