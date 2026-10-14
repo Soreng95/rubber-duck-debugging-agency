@@ -8,8 +8,7 @@
     background: var(--l-bg);
     color: var(--l-white);
     font-family: "Space Grotesk", system-ui, sans-serif;
-    padding: 2rem 1rem;
-}
+    padding: clamp(64px, 10vw, 130px) clamp(24px, 5vw, 80px);}
 
 .faq_question-no {
   transition: color 0.2s ease;
@@ -24,11 +23,11 @@
   border-radius: 50%;
   border: 2px solid transparent;
   line-height: 1;
-  transition: color 0.2s ease, 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .faq_item.is-open .faq_question-no {
-  color: var(--l-orange)
+  color: var(--l-orange);
 }
 
 .faq_item.is-open .faq_icon {
