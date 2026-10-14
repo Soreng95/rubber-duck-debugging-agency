@@ -10,7 +10,7 @@ const FALLBACK = {
   scrollCue: "Scroll",
 };
 
-export default function Hero({ content = {} }) {
+export default function Hero({ content = {}, meta }) {
   // Each field falls back independently if the API data is missing.
   const {
     image = FALLBACK.image,
@@ -18,9 +18,13 @@ export default function Hero({ content = {} }) {
     titleMain = FALLBACK.titleMain,
     eyebrow = FALLBACK.eyebrow,
     titleYear = FALLBACK.titleYear,
-    venue = FALLBACK.venue,
     scrollCue = FALLBACK.scrollCue,
   } = content;
+
+  // Get venue name from meta, add Oslo, or use the fallback if missing.
+const venue = meta?.venue?.name
+  ? `${meta.venue.name}, Oslo`
+  : FALLBACK.venue;
 
   return (
     <header className="hero" data-screen-label="Hero">

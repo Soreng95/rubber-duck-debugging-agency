@@ -120,7 +120,7 @@ Colours have a fallback */
 }
 
 .neon--title {
-  font-size: clamp(96px, 26vw, 360px);
+  font-size: clamp(64px, 26vw, 360px);
 }
 
 .neon--26 {

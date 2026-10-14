@@ -122,7 +122,7 @@ export default function App() {
           chaining (`?.`) is what stops that null from throwing. */}
 
       {/* Pass the hero content from the API to the Hero component. */}
-      <Hero content={content?.hero} />
+      <Hero content={content?.hero} meta={content?.meta} />
 
       <Lineup content={content?.lineup} />
       <Tickets content={content?.tickets} />
