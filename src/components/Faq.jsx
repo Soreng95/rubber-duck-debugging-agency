@@ -8,7 +8,7 @@ export default function Faq({content, meta}) {
   if (!content) return <p>Loading…</p>;
 
   return (
-    <>
+  <section className="faq">
       <h2>Spørsmål</h2>  
       <h3>{content.title}</h3>
       {content.items.map((item) => (
@@ -19,6 +19,6 @@ export default function Faq({content, meta}) {
         isOpen={openId === item.id}
         onToggle={() => setOpenId(openId === item.id ? null : item.id)}  />
       ))}
-    </>
+    </section>
   );
 }

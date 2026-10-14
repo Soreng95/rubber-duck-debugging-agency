@@ -12,7 +12,7 @@ export default function FaqItem({ item, venue, isOpen, onToggle}) {
   const showMap = item.id === mapId && coordinates;
 
   return (
-    <div className="faq_item">
+    <div className={`faq_item ${isOpen ? "is-open" : ""}`}>
       <button
         type="button"
         id={buttonId}
@@ -26,7 +26,7 @@ export default function FaqItem({ item, venue, isOpen, onToggle}) {
           <p className="faq_question-en">{item.q.en}</p>
         </div>
         <span className="faq_icon" aria-hidden="true">
-          {isOpen ? "−" : "+"}
+          {isOpen ? "×" : "+"}
         </span>
       </button>
 
