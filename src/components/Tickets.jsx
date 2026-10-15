@@ -37,6 +37,10 @@ const PLACEHOLDER = {
     invalid: "Skriv inn et gyldig telefonnummer / Enter a valid phone number",
   },
  },
+  claimed: {
+    title: "Plassen er sikret",
+    note: "Vi sender bekreftelse på e-post / Confirmation is on its way",
+  },
 };
 
 // returns "email", "phone" or null (= everything is valid)
@@ -55,7 +59,9 @@ export default function Tickets({ content = PLACEHOLDER }) {
         title, meta, tag, name, edition, info,
         price = PLACEHOLDER.price, 
         stub = PLACEHOLDER.stub, 
-        fields = PLACEHOLDER.fields } = content;
+        fields = PLACEHOLDER.fields,
+        claimed: claimedText = PLACEHOLDER.claimed,
+     } = content;
 
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -181,7 +187,7 @@ export default function Tickets({ content = PLACEHOLDER }) {
                     aria-live="polite"
                     >
                         {claimed
-                        ? "Billett sikret - sjekk innboksen / Ticket claimed - check your inbox"
+                        ? `${claimedText.title} - ${claimedText.note}`
                         : errorField && fields[errorField].invalid}
                     </p>
                 </div>
@@ -200,8 +206,19 @@ export default function Tickets({ content = PLACEHOLDER }) {
                 onPointerUp={handlePointerUp}
                 onPointerCancel={handlePointerUp}
                 >
+                
+                {claimed ? (
+                    <span className="ticket_stub-done" aria-hidden="true">
+                        <span className="ticket_tick">✓</span>
+                        <span className="ticket_done-title">{claimedText.title}</span>
+                        <span className="ticket_done-note">{claimedText.note}</span>
+                    </span>
+                ) : (
+                    <>
                     <span className="ticket_arrow" aria-hidden="true">⇨</span>
                     <span className="ticket_stub-label">{stub.label}</span>
+                    </>
+                )}
                 </button>
             </form>
         </section> 
