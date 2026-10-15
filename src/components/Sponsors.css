@@ -1,0 +1,90 @@
+*{
+  box-sizing: border-box;
+}
+.sponsors {
+    color: var(--white);
+    background: var(--bg);
+    padding: clamp(48px, 7vw, 92px) 0;
+    font-size: clamp(26px, 3.2vw, 42px);
+    line-height: 1;
+    letter-spacing: .01em;
+}
+
+.sponsors_label {
+  margin: 0 0 clamp(30px, 4vw, 50px);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--white);
+  opacity: 0.5;
+  letter-spacing: 0.32em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  text-wrap: pretty;
+}
+
+.sponsors_marquee {
+  overflow: hidden;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+
+.sponsors_track {
+  color: var(--white);
+  display: flex;
+  gap: clamp(48px, 6vw, 104px);
+  width: max-content;
+  align-items: center;
+  animation: sponsorsSlide 40s linear infinite;
+}
+
+.sponsors_name {
+  cursor: pointer;
+  flex-shrink: 0;
+  color: color-mix(in srgb, var(--white) 60%, transparent);
+  white-space: nowrap;
+  font-size: clamp(26px, 3.2vw, 42px);
+  line-height: 1;
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--orange) 0%, transparent));
+  transition: color .25s ease, filter .25s ease;
+  user-select: none;
+}
+
+.sponsors_marquee:hover .sponsors_name,
+.sponsors_paused .sponsors_name {
+  color: color-mix(in srgb, var(--white) 45%, transparent);
+}
+
+.sponsors_marquee .sponsors_name:hover,
+.sponsors_paused .sponsors_name--active {
+  color: #fff;
+  filter: drop-shadow(0 0 12px color-mix(in srgb, var(--orange) 55%, transparent)
+  );
+}
+
+@keyframes sponsorsSlide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause when hovering with a mouse */
+@media (hover: hover) {
+  .sponsors_marquee:hover .sponsors_track {
+    animation-play-state: paused;
+  }
+}
+
+.sponsors_paused .sponsors_track {
+  animation-play-state: paused;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .sponsors_track {
+    animation: none;
+  }
+}

@@ -26,6 +26,8 @@ import Lineup from "./components/Lineup.jsx";
 import Tickets from "./components/Tickets.jsx";
 import Help from "./components/Help.jsx";
 
+import Sponsors from "./components/Sponsors.jsx";
+
 import { fetchContent } from "./api.js";
 
 // We have no router, and one page does not need one. The address bar already
@@ -128,6 +130,7 @@ export default function App() {
 
       <Lineup content={content?.lineup} />
       <Tickets content={content?.tickets} />
+      <Sponsors content={content?.sponsors} />
     </>
   );
 }
