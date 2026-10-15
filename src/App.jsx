@@ -24,9 +24,9 @@ import { useEffect, useState } from "react";
 import Hero from "./components/Hero.jsx";
 import Lineup from "./components/Lineup.jsx";
 import Tickets from "./components/Tickets.jsx";
-import Help from "./components/Help.jsx";
-
 import Sponsors from "./components/Sponsors.jsx";
+import Faq from "./components/Faq.jsx";
+import Help from "./components/Help.jsx";
 
 import { fetchContent } from "./api.js";
 
@@ -123,14 +123,14 @@ export default function App() {
           gets `undefined` and falls back to its own built-in copy. Optional
           chaining (`?.`) is what stops that null from throwing. */}
 
-      {/* Hero fetches /content/hero on its own and takes no props, so it is
-          the one section not fed from here. That is a second request for
-          data we already have - it moves to props in Mona's issue. */}
-      <Hero />
+      {/* Pass the hero content from the API to the Hero component. */}
+      <Hero content={content?.hero} meta={content?.meta} />
+
 
       <Lineup content={content?.lineup} />
       <Tickets content={content?.tickets} />
       <Sponsors content={content?.sponsors} />
+      <Faq content={content?.faq} meta={content?.meta} />
     </>
   );
 }
