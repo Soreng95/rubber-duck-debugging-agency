@@ -39,15 +39,19 @@ const PLACEHOLDER = {
 function findInvalidField(email, phone) {
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) return "email";
 
-    //remove spaces, then: 8 digits, or + country code and 8+ digits
-    const digits = phone.replace(/\s/g, "");
-    if (!/^(\d{8}|\+\d{10,})$/.test(digits)) return "phone";
+    //remove spaces, then: 8 digits, or + country code and 8+ digits, or 10+ digits 
+    const digits = phone.replace(/[\s\-()]/g, "");
+    if (!/^(\d{8}|\+?\d{10,})$/.test(digits)) return "phone";
 
     return null;
 }
 
 export default function Tickets({ content = PLACEHOLDER }) {
-    const { title, meta, tag, name, edition, info, price, stub, fields } = content;
+    const { 
+        title, meta, tag, name, edition, info,
+        price = PLACEHOLDER.price, 
+        stub = PLACEHOLDER.stub, 
+        fields = PLACEHOLDER.fields } = content;
 
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
