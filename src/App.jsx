@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 import Hero from "./components/Hero.jsx";
 import Lineup from "./components/Lineup.jsx";
 import Tickets from "./components/Tickets.jsx";
+import Faq from "./components/Faq.jsx";
 import Help from "./components/Help.jsx";
 
 import { fetchContent } from "./api.js";
@@ -124,8 +125,10 @@ export default function App() {
       {/* Pass the hero content from the API to the Hero component. */}
       <Hero content={content?.hero} meta={content?.meta} />
 
+
       <Lineup content={content?.lineup} />
       <Tickets content={content?.tickets} />
+      <Faq content={content?.faq} meta={content?.meta} />
     </>
   );
 }
