@@ -14,6 +14,7 @@ Colours fall back to the default theme if the theme is not set in the app.
     color: var(--t-white);
     font-family: "Space Grotesk", system-ui, sans-serif;
     padding: clamp(40px, 6vw, 80px) clamp(16px, 5vw, 80px) clamp(80px, 11vw, 140px);
+    overflow-x: clip;
 }
 
 .tickets *, .tickets *::before, .tickets *::after {
@@ -144,7 +145,7 @@ Colours fall back to the default theme if the theme is not set in the app.
     border: none;
     font: inherit;
     cursor: grab;
-    touch-action: none;
+    touch-action: pan-y;
     user-select: none;
     transform: translateX(calc(var(--tear) * 130px)) rotate(calc(var(--tear) * 6deg));
     transform-origin: left center;
@@ -220,6 +221,10 @@ Colours fall back to the default theme if the theme is not set in the app.
     color: #ff5a6e;
 }
 
+.ticket_error.is-success {
+    color: var(--t-green);
+}
+
 @media (max-width: 560px) {
     .ticket {
         flex-direction: column;
@@ -256,13 +261,11 @@ Colours fall back to the default theme if the theme is not set in the app.
     }
 
     .ticket_stub {
-        transform-origin: top center;
-        transform: translateY(calc(var(--tear) * 18px)) rotate(calc(var(--tear) * -2deg));
+        transform-origin: left center;
+        transform: translateX(calc(var(--tear) * 130px)) rotate(calc(var(--tear) * 3deg));
     }
-    .ticket.claimed .ticket_stub {transform: translateY(26px) rotate(-1.5deg); }
+    .ticket.claimed .ticket_stub {transform: translateX(34px) rotate(1.5deg); }
 
-    .ticket_arrow {
-        font-size: 40px;
-        transform: rotate(90deg);
-    }
+    .ticket_arrow { transform: none;}
+    
 }

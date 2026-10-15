@@ -11,6 +11,9 @@ it for real data when it is available.
 import {useRef, useState} from "react";
 import "./Tickets.css";
 
+const DRAG_DISTANCE = 130 // full drag
+const TAP_THRESHOLD = 0.05 // below this is a tap/click
+const CLAIM_THRESHOLD = 0.6 // past this the drag claims
 
 // TODO: replace this with real data from the backend when it is ready
 const PLACEHOLDER = {
@@ -82,16 +85,14 @@ export default function Tickets({ content = PLACEHOLDER }) {
     function handlePointerDown(e) {
         if (claimed) return;
         e.currentTarget.setPointerCapture(e.pointerId); // keeps events even if pointer leaves the stub
-        drag.current = { x: e.clientX, y: e.clientY, prog: 0 };
+        drag.current = { x: e.clientX, prog: 0 };
         setDragging(true);
     }
 
     function handlePointerMove(e) {
         if (!drag.current) return;
-        // desktop: drag right - mobile stacked: drag down
-        const isMobile = window.matchMedia("(max-width: 560px)").matches;
-        const distance = isMobile ? e.clientY - drag.current.y : e.clientX - drag.current.x;
-        const prog = Math.min(1, Math.max(0, distance / 130));
+        const distance = e.clientX - drag.current.x; // always horizontal
+        const prog = Math.min(1, Math.max(0, distance / DRAG_DISTANCE));
         drag.current.prog = prog;
         setTear(prog);
     }
@@ -103,12 +104,12 @@ export default function Tickets({ content = PLACEHOLDER }) {
         setDragging(false);
         setTear(0); // always spring back; claimed CSS handles the torn off position
 
-        if (prog > 0.05) {
+        if (prog > TAP_THRESHOLD) {
             // real drag, not a tap -> ignore the click that follows
             justDragged.current = true;
             setTimeout(() => (justDragged.current = false), 50);
         }
-        if (prog > 0.06) tryClaim(); // past 60% -> try to claim
+        if (prog > CLAIM_THRESHOLD) tryClaim(); // past 60% -> try to claim
     }
 
     return (
@@ -175,8 +176,13 @@ export default function Tickets({ content = PLACEHOLDER }) {
                         <span>{price.note}</span>
                     </p>
 
-                    <p id="tk-error" className="ticket_error" aria-live="polite">
-                        {errorField && fields[errorField].invalid}
+                    <p id="tk-error"
+                    className={`ticket_error ${claimed ? "is-success" : ""}`}
+                    aria-live="polite"
+                    >
+                        {claimed
+                        ? "Billett sikret - sjekk innboksen / Ticket claimed - check your inbox"
+                        : errorField && fields[errorField].invalid}
                     </p>
                 </div>
 
@@ -187,7 +193,7 @@ export default function Tickets({ content = PLACEHOLDER }) {
                 <button
                 type="submit"
                 className="ticket_stub"
-                disabled={claimed}
+                aria-disabled={claimed}
                 aria-label={claimed ? "Billett sikret / Ticket claimed" : "Sikre billett / Claim ticket"}
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
