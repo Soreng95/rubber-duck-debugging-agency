@@ -1,0 +1,170 @@
+/* ArtistModal.css - Issues #11 and #12
+Plain CSS, same as the other sections. Colours come from styles/tokens.css.
+*/
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+
+    display: grid;
+    place-items: center;
+    padding: clamp(16px, 4vw, 48px);
+
+    background: rgba(10, 4, 8, .72);
+    backdrop-filter: blur(3px);
+}
+
+.modal_panel {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: min(880px, 100%);
+
+    /* The panel may not grow past the window, and the body scrolls inside it
+       rather than the page scrolling behind. Needed for a long bio on a short
+       screen. */
+    max-height: min(640px, 90vh);
+    overflow: hidden;
+
+    border: 1px solid rgba(255, 242, 234, .14);
+    border-radius: var(--radius-lg);
+    background: var(--bg);
+    color: var(--white);
+    font-family: var(--font-body);
+    box-shadow: 0 30px 90px rgba(0, 0, 0, .6);
+}
+
+.modal_close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 2;
+
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 242, 234, .3);
+    background: rgba(22, 10, 18, .7);
+    color: var(--white);
+    font: inherit;
+    font-size: 15px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    transition: background .2s, transform .2s;
+}
+
+.modal_close:hover {
+    background: var(--orange);
+    color: var(--bg);
+    transform: scale(1.06);
+}
+
+.modal_close:focus-visible {
+    outline: 3px solid var(--orange);
+    outline-offset: 3px;
+}
+
+/* The photo half. The gradient is not decoration for its own sake - it is
+   what you see while the artist images are still missing (#2), instead of a
+   broken image icon. */
+.modal_img {
+    position: relative;
+    min-height: 220px;
+    background:
+        linear-gradient(140deg, rgba(255, 122, 51, .35), rgba(30, 207, 154, .25)),
+        var(--bg);
+}
+
+.modal_img img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal_body {
+    padding: clamp(22px, 3vw, 38px);
+    padding-right: clamp(22px, 3vw, 60px);  /* room for the close button */
+    overflow-y: auto;
+}
+
+.modal_role {
+    margin: 0 0 6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    color: var(--orange);
+}
+
+.modal_name {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-condensed);
+    font-weight: 600;
+    font-size: clamp(30px, 4vw, 48px);
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.modal_tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin: 0 0 var(--space-3);
+    padding: 0;
+    list-style: none;
+}
+
+.modal_tag {
+    padding: 5px 11px;
+    border: 1px solid rgba(255, 242, 234, .22);
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink);
+}
+
+.modal_bio {
+    margin: 0 0 var(--space-2);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* The English bio is the secondary one, so it steps back a little. */
+.modal_bio--en {
+    margin-bottom: 0;
+    color: var(--ink);
+    font-size: 14px;
+}
+
+@media (max-width: 680px) {
+    /* Side by side stops working once each column is narrower than the
+       artist's name. Stack, and let the panel scroll as one. */
+    .modal_panel {
+        grid-template-columns: 1fr;
+        max-height: 92vh;
+        overflow-y: auto;
+    }
+
+    .modal_img {
+        min-height: 200px;
+    }
+
+    .modal_body {
+        overflow-y: visible;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .modal_close {
+        transition: none;
+    }
+
+    .modal_close:hover {
+        transform: none;
+    }
+}
