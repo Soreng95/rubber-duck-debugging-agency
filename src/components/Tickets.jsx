@@ -23,7 +23,11 @@ const PLACEHOLDER = {
   name: "STØY",
   edition: "/26",
   info: "Sentrum Scene, Oslo - Doors: 18:00 - 16+",
-  price: { label: "Fra / From", amount: "690 NOK", note: "Early bird til 31.08" },
+  price: {
+    label: "Fra / From",
+    from: { amountMinor: 69000, currency: "NOK" },
+    note: "Early bird til 31.08",
+  },
   stub: { label: "Drag to claim" },
   fields: {
     email: {
@@ -42,6 +46,21 @@ const PLACEHOLDER = {
     note: "Vi sender bekreftelse på e-post / Confirmation is on its way",
   },
 };
+
+// The API never sends a ready-made price string. It sends an integer in minor
+// units - 69000, not 690 - plus a currency code, because integers do not drift
+// the way decimals do once anything adds a booking fee. Turning that into text
+// is the view's job, and where the symbol goes is part of the decision:
+// Norwegian writes "690 kr", English writes "NOK 690".
+function formatPrice(from) {
+  if (!from) return "";
+
+  return new Intl.NumberFormat("nb-NO", {
+    style: "currency",
+    currency: from.currency,
+    maximumFractionDigits: 0,
+  }).format(from.amountMinor / 100);
+}
 
 // returns "email", "phone" or null (= everything is valid)
 function findInvalidField(email, phone) {
@@ -178,7 +197,7 @@ export default function Tickets({ content = PLACEHOLDER }) {
 
                     <p className="ticket_price">
                         <span>{price.label}</span>
-                        <b>{price.amount}</b>
+                        <b>{formatPrice(price.from)}</b>
                         <span>{price.note}</span>
                     </p>
 
