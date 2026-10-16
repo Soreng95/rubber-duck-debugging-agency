@@ -225,6 +225,51 @@ Colours fall back to the default theme if the theme is not set in the app.
     color: var(--t-green);
 }
 
+.ticket_stub-done {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    color: #04231a;
+    animation: stubDone .5s cubic-bezier(.2, 1.4, .4, 1);
+}
+
+.ticket_tick {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    display: grid;
+    place-items: center;
+    font-size: 22px;
+}
+
+.ticket_done-title {
+    font-family: "Archivo Black", sans-serif;
+    font-size: clamp(16px, 2vw, 22px);
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.ticket_done-note {
+    font-family: "DM MONO", monospace;
+    font-size: 11px;
+    letter-spacing: .12em;
+    line-height: 1.45;
+    text-transform: uppercase;
+}
+
+.ticket.claimed .ticket_stub {
+    background: linear-gradient(150deg, #2af0a8, #10ad6b);
+    box-shadow: 0 16px 44px rgba(0, 0, 0, .5), 0 0 34px rgba(25, 200, 125, .4);
+}
+
+@keyframes stubDone {
+    from { opacity: 0; transform: scale(.6) rotate(-8deg); }
+    to { opacity: 1; transform: none; }
+}
+
 @media (max-width: 560px) {
     .ticket {
         flex-direction: column;
@@ -268,4 +313,8 @@ Colours fall back to the default theme if the theme is not set in the app.
 
     .ticket_arrow { transform: none;}
     
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ticket_stub-done { animation: none; }
 }
