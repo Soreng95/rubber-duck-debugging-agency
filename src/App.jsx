@@ -24,6 +24,7 @@ import { useEffect, useState } from "react";
 import Hero from "./components/Hero.jsx";
 import Lineup from "./components/Lineup.jsx";
 import Tickets from "./components/Tickets.jsx";
+import Sponsors from "./components/Sponsors.jsx";
 import Faq from "./components/Faq.jsx";
 import Help from "./components/Help.jsx";
 
@@ -128,6 +129,7 @@ export default function App() {
 
       <Lineup content={content?.lineup} />
       <Tickets content={content?.tickets} />
+      <Sponsors content={content?.sponsors} />
       <Faq content={content?.faq} meta={content?.meta} />
     </>
   );
