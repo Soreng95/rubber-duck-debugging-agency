@@ -8,8 +8,12 @@ Text comes from the content JSON. Until Emil's backend is ready we use PLACEHOLD
 it for real data when it is available.
 */
 
-import { useState } from "react";
+import {useRef, useState} from "react";
 import "./Tickets.css";
+
+const DRAG_DISTANCE = 130 // full drag
+const TAP_THRESHOLD = 0.05 // below this is a tap/click
+const CLAIM_THRESHOLD = 0.6 // past this the drag claims
 
 // TODO: replace this with real data from the backend when it is ready
 const PLACEHOLDER = {
@@ -57,9 +61,55 @@ export default function Tickets({ content = PLACEHOLDER }) {
     const [phone, setPhone] = useState("");
     const [errorField, setErrorField] = useState(null); 
 
+    const [claimed, setClaimed] = useState(false);
+    const [dragging, setDragging] = useState(false);
+    const [tear, setTear] = useState(0); // 0 -> 1, how far the stub is dragged
+
+    const drag = useRef(null); // start position
+    const justDragged = useRef(false); // stops the click after a drag from submitting twice
+
+    // shared by drag, Enter and click
+    function tryClaim() {
+        if (claimed) return;
+        const invalid = findInvalidField(email, phone);
+        setErrorField(invalid);
+        if (!invalid) setClaimed(true);
+    }
+    
     function handleSubmit(e) {
         e.preventDefault(); // prevent the form from actually submitting and reloading the page
-        setErrorField(findInvalidField(email, phone));
+        if (justDragged.current) return; // drag already handled it
+        tryClaim();
+    }
+
+    function handlePointerDown(e) {
+        if (claimed) return;
+        e.currentTarget.setPointerCapture(e.pointerId); // keeps events even if pointer leaves the stub
+        drag.current = { x: e.clientX, prog: 0 };
+        setDragging(true);
+    }
+
+    function handlePointerMove(e) {
+        if (!drag.current) return;
+        const distance = e.clientX - drag.current.x; // always horizontal
+        const prog = Math.min(1, Math.max(0, distance / DRAG_DISTANCE));
+        drag.current.prog = prog;
+        setTear(prog);
+    }
+
+    function handlePointerUp() {
+        if (!drag.current) return;
+        const prog = drag.current.prog;
+        drag.current = null;
+        setDragging(false);
+        setTear(0); // always spring back; claimed CSS handles the torn off position
+
+        if (prog > TAP_THRESHOLD) {
+            // real drag, not a tap -> ignore the click that follows
+            justDragged.current = true;
+            setTimeout(() => (justDragged.current = false), 50);
+        }
+        if (prog > CLAIM_THRESHOLD) tryClaim(); // past 60% -> try to claim
     }
 
     return (
@@ -69,7 +119,13 @@ export default function Tickets({ content = PLACEHOLDER }) {
                 <p className="tickets_meta">{meta}</p>
             </div>
 
-            <form className="ticket" onSubmit={handleSubmit} noValidate>
+            <form 
+            className={`ticket ${dragging ? "dragging" : ""} ${claimed ? "claimed" : ""}`}
+            style={{ "--tear" : tear }}
+            onSubmit={handleSubmit}
+            noValidate
+            >
+
                 {/* The main body of the ticket */}
                 <div className="ticket_main">
                     <p className="ticket_tag">{tag}</p>
@@ -120,22 +176,33 @@ export default function Tickets({ content = PLACEHOLDER }) {
                         <span>{price.note}</span>
                     </p>
 
-                    <p id="tk-error" className="ticket_error" aria-live="polite">
-                        {errorField && fields[errorField].invalid}
+                    <p id="tk-error"
+                    className={`ticket_error ${claimed ? "is-success" : ""}`}
+                    aria-live="polite"
+                    >
+                        {claimed
+                        ? "Billett sikret - sjekk innboksen / Ticket claimed - check your inbox"
+                        : errorField && fields[errorField].invalid}
                     </p>
-
-                    {/* temporary - #15 turns the stub into a submit button*/}
-                    <button type="submit">Test</button>
                 </div>
 
                 {/* Tear line: a repeating gradient of dots */}
                 <div className="ticket_perf" aria-hidden="true" />
 
-                {/* Stub - #15 adds the drag behavior here, #16 adds the done behavior */}
-                <div className="ticket_stub">
+                {/* Stub: a real button, so it works with drag (#15), Enter and space and click */}
+                <button
+                type="submit"
+                className="ticket_stub"
+                aria-disabled={claimed}
+                aria-label={claimed ? "Billett sikret / Ticket claimed" : "Sikre billett / Claim ticket"}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerUp}
+                >
                     <span className="ticket_arrow" aria-hidden="true">⇨</span>
                     <span className="ticket_stub-label">{stub.label}</span>
-                </div>
+                </button>
             </form>
         </section> 
     );
