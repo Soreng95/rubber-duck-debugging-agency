@@ -3,6 +3,22 @@ import"./FaqItem.css";
 
 const mapId = "faq-travel";
 
+const highlightedWords = ["16 år.", "18:00", "18:30", "overdras", "inkludert", "Ja."];
+
+function Highlight({ text }) {
+  const pattern = new RegExp(
+    `(${highlightedWords.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`,
+    "gi"
+  );
+  return text.split(pattern).map((part, i) =>
+    i % 2 === 1 ? (
+      <span key={i} className="faq_highlight">{part}</span>
+    ) : (
+      part
+    )
+  );
+}
+
 export default function FaqItem({ item, venue, isOpen, onToggle}) {
   const id = useId();
   const buttonId = `${id}-button`;
@@ -45,7 +61,7 @@ export default function FaqItem({ item, venue, isOpen, onToggle}) {
     </div>
   )}
 
-          <p>{item.a.no}</p>
+          <p><Highlight text={item.a.no} /></p>
           <p>{item.a.en}</p>
 
           {showMap && (
