@@ -29,6 +29,7 @@ export default function FaqItem({ item, venue, isOpen, onToggle}) {
 
   return (
     <div className={`faq_item ${isOpen ? "is-open" : ""}`}>
+       <h3 className="faq_heading">
       <button
         type="button"
         id={buttonId}
@@ -45,7 +46,7 @@ export default function FaqItem({ item, venue, isOpen, onToggle}) {
           {isOpen ? "×" : "+"}
         </span>
       </button>
-
+</h3>
       <div
         id={panelId}
         role="region"
