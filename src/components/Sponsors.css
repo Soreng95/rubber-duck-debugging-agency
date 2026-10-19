@@ -5,7 +5,6 @@
     color: var(--white);
     background: var(--bg);
     padding: clamp(48px, 7vw, 92px) 0;
-    font-size: clamp(26px, 3.2vw, 42px);
     line-height: 1;
     letter-spacing: .01em;
 }
@@ -39,6 +38,8 @@
 }
 
 .sponsors_name {
+  border: none;
+  background: transparent;
   cursor: pointer;
   flex-shrink: 0;
   color: color-mix(in srgb, var(--white) 60%, transparent);
@@ -77,14 +78,28 @@
     animation-play-state: paused;
   }
 }
-
+/* Pause when a sponsor is click */
 .sponsors_paused .sponsors_track {
   animation-play-state: paused;
 }
-
+/* Pause during keyboard navigation */
+.sponsors_marquee:focus-within .sponsors_track {
+  animation-play-state: paused;
+}
 /* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
+  .sponsors_marquee{
+    overflow: visible;
+    -webkit-mask: none;
+    mask: none;
+  }
   .sponsors_track {
     animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+  }
+  .sponsors_name--duplicate {
+    display: none;
   }
 }
