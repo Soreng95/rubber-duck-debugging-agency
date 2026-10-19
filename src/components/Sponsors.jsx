@@ -47,19 +47,24 @@ export default function Sponsors({ content = FALLBACK }) {
       <div className={`sponsors_marquee ${paused ? "sponsors_paused" : ""}`}>
         <div className="sponsors_track">
           {[...sponsors, ...sponsors].map((sponsor, index) => (
-            <span
+            <button
+              type="button"
               key={`${sponsor.name}-${index}`}
               className={`sponsors_name ${
+                index >= sponsors.length ? "sponsors_name--duplicate" : ""
+              } ${
                 activeSponsor === index % sponsors.length && paused
                   ? "sponsors_name--active"
                   : ""
               }`}
               style={ FONT_TOKENS[sponsor.font] ?? FONT_TOKENS.grotesk }
               onClick={() => handleSponsorClick(index % sponsors.length)}
-              aria-hidden={index >= sponsors.length}
+              inert={index >= sponsors.length}
+              aria-pressed={activeSponsor === index % sponsors.length && paused}
+              aria-label={sponsor.name}
               >
                 {sponsor.name}
-            </span>
+            </button>
           ))}
         </div>
       </div>
