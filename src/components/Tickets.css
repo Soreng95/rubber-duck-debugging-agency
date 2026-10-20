@@ -213,6 +213,11 @@ Colours fall back to the default theme if the theme is not set in the app.
     border-color: var(--t-orange);
 }
 
+.field input:read-only {
+    opacity: .6;
+    cursor: default;
+}
+
 .ticket_error {
     min-height: 1.4em;
     margin: 14px 0 0;
@@ -317,4 +322,10 @@ Colours fall back to the default theme if the theme is not set in the app.
 
 @media (prefers-reduced-motion: reduce) {
     .ticket_stub-done { animation: none; }
+    .ticket_stub {
+        transition: none;
+    }
+    .ticket_stub-done {
+        animation: none;
+    }
 }
