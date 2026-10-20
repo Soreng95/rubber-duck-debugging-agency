@@ -174,6 +174,7 @@ export default function Tickets({ content = PLACEHOLDER }) {
                             }}
                             aria-invalid={errorField === "email"}
                             aria-describedby="tk-error"
+                            readOnly={claimed}
                             />
                         </div>
 
@@ -196,8 +197,8 @@ export default function Tickets({ content = PLACEHOLDER }) {
                     </div>
 
                     <p className="ticket_price">
-                        <span>{price.label}</span>
-                        <b>{formatPrice(price.from)}</b>
+                        <span>{price.label}</span>{" "}
+                        <b>{formatPrice(price.from)}</b>{" "}
                         <span>{price.note}</span>
                     </p>
 
