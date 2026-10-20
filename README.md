@@ -28,6 +28,7 @@ routing, a server and a build setup on top.
 8. [Your first task](#8-your-first-task)
 9. [When something breaks](#9-when-something-breaks)
 10. [Emil's super cool terminal setup](#10-emils-super-cool-terminal-setup)
+11. [How this poster is built](#how-this-poster-is-built)
 
 ---
 
@@ -763,6 +764,6 @@ Edit `src/data/stoy26.json`. You do not need to touch a component to change text
 
 Do not copy these patterns. Both break silently if the backend text changes:
 
-- **`Sponsors.jsx`** invents sponsor names in its fallback list instead of showing nothing or a neutral placeholder.
+- **`Sponsors.jsx`** has a fallback list with the eight sponsors from the original poster, so the design holds if the API is unavailable. The API currently returns six, so the fallback and the live data can may differ. If sponsors change in the backend, update, the fallback too.
 - **`FaqItem.jsx`** hardcodes which words to highlight and which letters to outline.
 
