@@ -75,9 +75,12 @@
 }
 
 .faq_question-en {
-  font-size: clamp(11px, 1.3vw, 14px);
-  letter-spacing: 0.15em;
-  color: var(--t-ink);
+  font-size: clamp(18px, 2.4vw, 26px);
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--white);
+  opacity: 0.5;
+  letter-spacing: 0.32em;
 }
 
 .faq_answer {
@@ -128,4 +131,12 @@
 .faq_answer-inner {
   overflow: hidden;
   color: rgba(255, 242, 234, 0.75);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq_answer,
+  .faq_question-no,
+  .faq_icon {
+    transition: none;
+  }
 }
