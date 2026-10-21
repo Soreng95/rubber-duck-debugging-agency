@@ -13,7 +13,10 @@ be able to reappear on the poster because a copy of the old list was left in a
 component. The only thing this file falls back to is the section heading.
 */
 
+import { useRef, useState } from "react";
+
 import ArtistCard from "./ArtistCard.jsx";
+import ArtistModal from "./ArtistModal.jsx";
 import "./Lineup.css";
 
 // Labels only - never content. If the request fails we still want a heading
@@ -23,7 +26,34 @@ const FALLBACK = {
   empty: "Line-up kommer / Line-up coming soon",
 };
 
-export default function Lineup({ content = {}, onArtistInfo }) {
+export default function Lineup({ content = {} }) {
+  // Issue #11. ONE piece of state for the modal, and it carries two facts at
+  // once: null means closed, an artist object means open and showing that
+  // artist. Adding a separate `isOpen` boolean alongside it is the classic
+  // mistake - two values describing one thing can disagree, and sooner or
+  // later they will.
+  const [openArtist, setOpenArtist] = useState(null);
+
+  // Where focus was when the modal opened, so we can put it back. A keyboard
+  // user who closes the modal and lands at the top of the page has lost their
+  // place entirely.
+  //
+  // Reading document.activeElement works because the info button has focus at
+  // the moment it is pressed - by keyboard always, and by mouse in every
+  // browser except Safari, which does not focus buttons on click. There the
+  // worst case is that focus simply stays where it was.
+  const lastFocused = useRef(null);
+
+  function handleArtistInfo(artist) {
+    lastFocused.current = document.activeElement;
+    setOpenArtist(artist);
+  }
+
+  function handleCloseModal() {
+    setOpenArtist(null);
+    lastFocused.current?.focus();
+  }
+
   // Every field defaults on its own, so a half-built payload renders instead
   // of throwing. `content = {}` only covers the case where App has not heard
   // back from the backend yet.
@@ -63,15 +93,21 @@ export default function Lineup({ content = {}, onArtistInfo }) {
           which the moment the list is reordered. */}
       <div className="lineup_grid lineup_grid--head">
         {headliners.map((artist) => (
-          <ArtistCard key={artist.id} artist={artist} onInfo={onArtistInfo} />
+          <ArtistCard key={artist.id} artist={artist} onInfo={handleArtistInfo} />
         ))}
       </div>
 
       <div className="lineup_grid lineup_grid--support">
         {support.map((artist) => (
-          <ArtistCard key={artist.id} artist={artist} onInfo={onArtistInfo} />
+          <ArtistCard key={artist.id} artist={artist} onInfo={handleArtistInfo} />
         ))}
       </div>
+
+      {/* Exactly one modal in the page, not one per card - it only exists
+          while openArtist is holding an artist. */}
+      {openArtist && (
+        <ArtistModal artist={openArtist} onClose={handleCloseModal} />
+      )}
 
       {/* Issue #10. Purely presentational - no new React here, just layout. */}
       {reveal && (
