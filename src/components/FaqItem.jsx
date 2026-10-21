@@ -39,8 +39,8 @@ export default function FaqItem({ item, venue, isOpen, onToggle}) {
         onClick={onToggle}
       >
         <span className="faq_question-text">
-          <span className="faq_question-no">{item.q.no}</span>
-          <span className="faq_question-en">{item.q.en}</span>
+          <span className="faq_question-no" lang="no">{item.q.no}</span>
+          <span className="faq_question-en" lang="en">{item.q.en}</span>
         </span>
         <span className="faq_icon" aria-hidden="true">
           {isOpen ? "×" : "+"}
@@ -62,8 +62,8 @@ export default function FaqItem({ item, venue, isOpen, onToggle}) {
     </div>
   )}
 
-          <p><Highlight text={item.a.no} /></p>
-          <p>{item.a.en}</p>
+          <p lang="no"><Highlight text={item.a.no} /></p>
+          <p lang="en">{item.a.en}</p>
 
           {showMap && (
             <iframe
