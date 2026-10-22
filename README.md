@@ -28,6 +28,7 @@ routing, a server and a build setup on top.
 8. [Your first task](#8-your-first-task)
 9. [When something breaks](#9-when-something-breaks)
 10. [Emil's super cool terminal setup](#10-emils-super-cool-terminal-setup)
+11. [How this poster is built](#how-this-poster-is-built)
 
 ---
 
@@ -692,3 +693,77 @@ Links:
 - [Vite docs](https://vite.dev/guide/)
 
 Ask questions in the group. There are no stupid ones in week one. 🦆
+
+## How this poster is built
+
+### The short version
+
+- **All copy lives in [`src/data/stoy26.json`](src/data/stoy26.json).** Text, prices, dates, artists, sponsors and FAQ. The backend serves it at `https://stoy26.vercel.app/content`.
+- **`App.jsx` fetches `/content` once** and passes each section down as props (`content={content?.tickets}` and so on). **No component fetches its own data.** This was agreed in #26. Two of us built it the other way first, so it is worth saying.
+- **[`src/styles/tokens.css`](src/styles/tokens.css) owns every colour and typeface.** Components read the tokens, never just raw hex values. The token names are the contract between sections: `--bg`, `--white`, `--orange`, `--green`, `--ink`, `--card`, `--card-ink`.
+
+### Component map
+
+```
+App
+├── Hero
+├── Lineup
+│ ├── ArtistCard
+│ ├── ArtistModal
+├── Tickets
+├── Sponsors
+├── Faq
+│ ├── FaqItem
+
+```
+
+| Component         | Does                                                                                            |
+| ----------------- | ----------------------------------------------------------------------------------------------- |
+| `App.jsx`         | Fetches `/content` once and hands each section its slice as props                               |
+| `Hero.jsx`        | Full-screen card with neon STØY/26, date, venue and scroll cue                                  |
+| `Lineup.jsx`      | The artist grid (headliners + support) and the state value that says which artist modal is open |
+| `ArtistCard.jsx`  | One artist that is in the lineup grid, with an info button that asks Lineup to open the modal   |
+| `ArtistModal.jsx` | Shared artist panel: photo, tags, both bios; that closes on x, backdrop and Escape              |
+| `Tickets.jsx`     | Tear-off ticket: email + phone form, drag (or Enter) the stub to claim, done state              |
+| `Sponsors.jsx`    | Scrolling sponsor marquee; pauses on hover, click to highlight                                  |
+| `Faq.jsx`         | FAQ accordion and venue map                                                                     |
+| `FaqItem.jsx`     | One question/answer row in the accordion                                                        |
+| `Help.jsx`        | The React tutorial this project started as, now `/#help`. Keep it, do not delete it by accident |
+
+### Changing content
+
+Edit `src/data/stoy26.json`. You do not need to touch a component to change text.
+
+**To add an artist, add an object to `lineup.artists` in the JSON. You do not need to touch any component.** The grid, the card, and the modal are all built from the data:
+
+```json
+{
+  "id": "new-artist",
+  "name": "NEW ARTIST",
+  "city": "Trondheim",
+  "genre": "Electronic",
+  "tier": "support",
+  "role": "Scene 2",
+  "startsAt": "2026-10-17T22:00:00+02:00",
+  "image": "/images/artists/new-artist.jpg",
+  "imageAlt": "New Artist on stage",
+  "bio": {
+    "no": "Kort bio på norsk.",
+    "en": "Short bio in English."
+  }
+}
+```
+
+- `tier` decides which grid the artist goes in: `"headliner"` or `"support"`, `role` is only the label shown the card.
+- `id` must be unique. React uses it as the list `key`.
+- `startsAt` is a full timestamp. The modal shows it in Oslo time, wherever the visitor is.
+- The tag chips (`city - genre - time`) are built from these fields, so there is no separate `tags` field.
+- Put the photo in `public/images/artists/`. If the image is missing, the modal shows a gradient instead of a broken image.
+
+### Known places where content leaked into components
+
+Do not copy these patterns. Both break silently if the backend text changes:
+
+- **`Sponsors.jsx`** has a fallback list with the eight sponsors from the original poster, so the design holds if the API is unavailable. The API currently returns six, so the fallback and the live data can may differ. If sponsors change in the backend, update, the fallback too.
+- **`FaqItem.jsx`** hardcodes which words to highlight and which letters to outline.
+
