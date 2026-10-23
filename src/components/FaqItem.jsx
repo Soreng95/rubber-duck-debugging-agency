@@ -3,14 +3,12 @@ import"./FaqItem.css";
 
 const mapId = "faq-travel";
 
-const highlightedWords = ["16 år.", "18:00", "18:30", "overdras", "inkludert", "Ja."];
-
+// The answers arrive with a pair of *stars* around the words that get the
+// highlight colour, so the copy decides which words light up and this file
+// only decides how they look. Split on the marker and every odd piece is
+// what sat between a pair.
 function Highlight({ text }) {
-  const pattern = new RegExp(
-    `(${highlightedWords.map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})`,
-    "gi"
-  );
-  return text.split(pattern).map((part, i) =>
+  return text.split("*").map((part, i) =>
     i % 2 === 1 ? (
       <span key={i} className="faq_highlight">{part}</span>
     ) : (
@@ -63,7 +61,7 @@ export default function FaqItem({ item, venue, isOpen, onToggle}) {
   )}
 
           <p lang="no"><Highlight text={item.a.no} /></p>
-          <p lang="en">{item.a.en}</p>
+          <p lang="en"><Highlight text={item.a.en} /></p>
 
           {showMap && (
             <iframe
