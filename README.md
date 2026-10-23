@@ -14,6 +14,29 @@ You already know HTML, CSS, JavaScript and a bit of Git. That is enough.
 Components, props and state work exactly the same there. Next.js just adds
 routing, a server and a build setup on top.
 
+### Sidenote for the teacher
+
+So you know where we actually are, rather than where this README might make
+it look like we are:
+
+**We have not touched routing.** Not at all. In practice we have worked in
+two places — `index.html` and the `src/` folder — and that is the whole of
+the project as far as we have looked at it.
+
+What we have covered:
+
+- How a component is built, exported, and imported somewhere else
+- Passing data in with props
+- Holding state with `useState`
+- Reaching outside React with `useEffect` — in our case, fetching the
+  content from our API once when the page loads
+
+What we have not covered: how any of it builds. We run `pnpm dev` and
+`pnpm build` as commands that work, not as something we can explain. What
+Vite does to a `.jsx` file on the way to the browser, what ends up in
+`dist/`, why the browser cannot read our source directly — all of that is
+still a black box to us, and we would rather say so than pretend otherwise.
+
 ---
 
 ## Table of contents
