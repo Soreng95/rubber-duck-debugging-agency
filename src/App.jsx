@@ -30,6 +30,8 @@ import Help from "./components/Help.jsx";
 
 import { fetchContent } from "./api.js";
 
+import "./App.css";
+
 // We have no router, and one page does not need one. The address bar already
 // carries a value we can read: everything after the "#". /#help shows the
 // tutorial, anything else shows the poster.
@@ -124,13 +126,23 @@ export default function App() {
           chaining (`?.`) is what stops that null from throwing. */}
 
       {/* Pass the hero content from the API to the Hero component. */}
+      {/* The hero sits outside the frame below on purpose: it is a
+          full-bleed image and it should touch both edges of the screen,
+          however wide that screen is. */}
       <Hero content={content?.hero} meta={content?.meta} />
 
-
-      <Lineup content={content?.lineup} />
-      <Tickets content={content?.tickets} />
-      <Sponsors content={content?.sponsors} />
-      <Faq content={content?.faq} meta={content?.meta} />
+      {/* Everything after the hero is text and cards, and those need a
+          ceiling — a line of FAQ text spanning a 27" monitor is a line
+          nobody can read twice. .poster paints the dark ground edge to
+          edge, .poster_inner is the ceiling, centred. See App.css. */}
+      <main className="poster">
+        <div className="poster_inner">
+          <Lineup content={content?.lineup} />
+          <Tickets content={content?.tickets} />
+          <Sponsors content={content?.sponsors} />
+          <Faq content={content?.faq} meta={content?.meta} />
+        </div>
+      </main>
     </>
   );
 }

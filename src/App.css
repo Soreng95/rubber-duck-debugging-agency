@@ -1,0 +1,35 @@
+/* ============================================================
+   src/App.css — the page frame
+   ============================================================
+
+   Plain CSS, not a module, same as the section files. It holds the two
+   rules that are about the page as a whole rather than about any one
+   section, so neither Lineup nor Tickets has to know how wide the site is.
+
+   The hero is deliberately NOT in here. It is a full-bleed, full-height
+   image and it is supposed to run to both edges of whatever screen it
+   lands on. Everything below it is text and cards, and text that runs the
+   full width of a 27" monitor is unreadable — the eye loses the start of
+   the next line. So the sections below the hero get a ceiling.
+
+   Two elements, because they do two different jobs:
+
+   .poster       full width, and the only thing it does is paint the dark
+                 ground. Without it the sides of a wide screen would show
+                 the <body> background through, which is the white page
+                 from index.css.
+   .poster_inner the ceiling. Centred with margin-inline: auto.
+
+   The sections keep their own horizontal padding (`clamp(24px, 5vw, 80px)`
+   and friends), so this only ever takes width away — it never pushes the
+   content against the edge on a small screen.
+   ------------------------------------------------------------ */
+
+.poster {
+  background: var(--bg);
+}
+
+.poster_inner {
+  max-width: var(--page-max);
+  margin-inline: auto;
+}

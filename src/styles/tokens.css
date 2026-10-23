@@ -61,4 +61,16 @@
 
   --radius: 11px;         /* cards */
   --radius-lg: 18px;      /* the ticket, the reveal block */
+
+  /* --- Page width ---------------------------------------------
+     How wide the sections below the hero are allowed to get. 80rem is
+     1280px at the default font size, which is the width most sites settle
+     on: wide enough for the artist grid to stay four across, narrow enough
+     that a line of FAQ text does not run the whole of a 27" monitor.
+
+     In rem rather than px on purpose — a reader who has turned their
+     browser font up gets a proportionally wider page, instead of the same
+     1280px with half the words in it. The hero ignores this entirely; see
+     App.css. */
+  --page-max: 80rem;
 }
